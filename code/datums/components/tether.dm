@@ -35,3 +35,19 @@
 	if (blocker)
 		to_chat(mover, "<span class='userdanger'>The [tether_name] catches on [blocker] and prevents you from moving!</span>")
 		return COMPONENT_MOVABLE_BLOCK_PRE_MOVE
+
+/obj/item/tether
+	name = "Tether"
+	desc = "Don't cross the streams!"
+	icon = 'icons/obj/chronos.dmi'
+	icon_state = "chronogun"
+	item_state = "chronogun"
+	w_class = WEIGHT_CLASS_NORMAL
+
+	var/mob/living/current_target
+	var/last_check = 0
+	var/check_delay = 10 //Check los as often as possible, max resolution is SSobj tick though
+	var/max_range = 8
+	var/list/anchorpoints = list()
+	var/list/datum/beam/current_beams = list()
+	//The idea is: E
