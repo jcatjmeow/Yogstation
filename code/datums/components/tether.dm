@@ -49,9 +49,8 @@
 	w_class = WEIGHT_CLASS_NORMAL
 
 	var/mob/living/listeningTo
-	var/last_check = 0
-	var/check_delay = 10 //Check los as often as possible, max resolution is SSobj tick though
-	var/max_range = 8
+	var/tetherLengthMax = 10 //the max length of the tether. Like, how long it is.
+	var/tetherLength = 4 //The length the tether will go before it won't give any more slack. Ajustable up to the max.
 	var/list/anchorpoints = list()//This is a list of the locations of each anchor point. This does NOT include the last point, aka the user.
 	var/list/datum/beam/current_beams = list() //one beam per anchor point
 	var/BeenHereBefore = FALSE //This handles the behavior of when you walk back to the original turf. It's supposed to unhook the tether automatically. But you have to walk away first!
@@ -63,16 +62,38 @@
 /obj/item/tether/Destroy(mob/user)
 	STOP_PROCESSING(SSobj, src)
 	listeningTo = null
+	deleteTethers()
+	return ..()
+
+/obj/item/tether/proc/deleteTethers()
 	for (var/i in current_beams)
 		qdel(i)
 	for (var/j in anchorpoints)
 		qdel(j)
 	return ..()
+	BeenHereBefore = FALSE
 
 /obj/item/tether/proc/newTether()
 	anchorpoints += loc
 	var/e = anchorpoints.len
 	current_beams[e] = new(anchorpoints[e], listeningTo.loc, time = INFINITY, beam_icon_state = "chain", btype = /obj/effect/ebeam/tether)
+
+/obj/item/tether/Crossed(mob/user)
+	if (listeningTo == user)
+		if (!BeenHereBefore)
+			BeenHereBefore = TRUE
+		else
+			deleteTethers()
+			to_chat(user, "<span class='notice'>You reel in the tether and unattach it.</span>")
+
+/obj/item/tether/afterattack(atom/target, mob/user, proximity)
+	. = ..()
+	if(isturf(target) && proximity)
+		if(anchorpoints.len)
+			to_chat(user, "<span class='warning'>The tether is already connected to something! Reel it back in first!</span>")
+			return
+		to_chat(user, "<span class='notice'>You attach the tether to the [target].</span>")
+		newTether()
 
 /obj/effect/ebeam/tether
 	name = "tether"
