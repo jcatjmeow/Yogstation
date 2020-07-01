@@ -70,8 +70,8 @@
 		qdel(i)
 	for (var/j in anchorpoints)
 		qdel(j)
-	return ..()
 	BeenHereBefore = FALSE
+	return ..()
 
 /obj/item/tether/proc/newTether()
 	anchorpoints += loc
