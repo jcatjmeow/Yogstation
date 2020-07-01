@@ -72,8 +72,7 @@
 /obj/item/tether/proc/newTether()
 	anchorpoints += loc
 	var/e = anchorpoints.len
-	current_beams[e] = new(anchorpoints[e], listeningTo.loc, time = INFINITY, beam_icon_state = "tether", btype = /obj/effect/ebeam/tether)
+	current_beams[e] = new(anchorpoints[e], listeningTo.loc, time = INFINITY, beam_icon_state = "chain", btype = /obj/effect/ebeam/tether)
 
 /obj/effect/ebeam/tether
 	name = "tether"
-	anchored = TRUE //This means you can push off the beam or walk on it in space. Like a lattice.
