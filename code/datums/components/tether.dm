@@ -36,18 +36,44 @@
 		to_chat(mover, "<span class='userdanger'>The [tether_name] catches on [blocker] and prevents you from moving!</span>")
 		return COMPONENT_MOVABLE_BLOCK_PRE_MOVE
 
+/*
+ * Tether
+ */
+
 /obj/item/tether
 	name = "Tether"
-	desc = "Don't cross the streams!"
+	desc = "A robust tether system, to keep astronauts from drifting away.\nClick on a wall to anchor the tether to it."
 	icon = 'icons/obj/chronos.dmi'
 	icon_state = "chronogun"
 	item_state = "chronogun"
 	w_class = WEIGHT_CLASS_NORMAL
 
-	var/mob/living/current_target
+	var/mob/living/listeningTo
 	var/last_check = 0
 	var/check_delay = 10 //Check los as often as possible, max resolution is SSobj tick though
 	var/max_range = 8
-	var/list/anchorpoints = list()
-	var/list/datum/beam/current_beams = list()
-	//The idea is: E
+	var/list/anchorpoints = list()//This is a list of the locations of each anchor point. This does NOT include the last point, aka the user.
+	var/list/datum/beam/current_beams = list() //one beam per anchor point
+	var/BeenHereBefore = FALSE //This handles the behavior of when you walk back to the original turf. It's supposed to unhook the tether automatically. But you have to walk away first!
+
+/obj/item/tether/Initialize()
+	. = ..()
+	START_PROCESSING(SSobj, src)
+
+/obj/item/tether/Destroy(mob/user)
+	STOP_PROCESSING(SSobj, src)
+	listeningTo = null
+	for (var/i in current_beams)
+		qdel(i)
+	for (var/j in anchorpoints)
+		qdel(j)
+	return ..()
+
+/obj/item/tether/proc/newTether()
+	anchorpoints += loc
+	var/e = anchorpoints.len
+	current_beams[e] = new(anchorpoints[e], listeningTo.loc, time = INFINITY, beam_icon_state = "tether", btype = /obj/effect/ebeam/tether)
+
+/obj/effect/ebeam/tether
+	name = "tether"
+	anchored = TRUE //This means you can push off the beam or walk on it in space. Like a lattice.
