@@ -73,20 +73,25 @@
 	BeenHereBefore = FALSE
 	return ..()
 
-/obj/item/tether/proc/newTether()
+/obj/item/tether/proc/newTether(target)
+	if(!target)
+		target = src
+	anchorpoints += target
 	var/e = length(anchorpoints)
 	world.log << e
-	current_beams[e] = new(anchorpoints[e], listeningTo, time = INFINITY, beam_icon_state = "chain", btype = /obj/effect/ebeam/tether)
+	current_beams += new /datum/beam(anchorpoints[e], src, time = INFINITY, beam_icon_state = "chain", maxdistance=100)
+	INVOKE_ASYNC(current_beams[length(current_beams)], /datum/beam.proc/Start)
 	if(e > 1)
-		current_beams[e-1] = new(anchorpoints[e-1], anchorpoints[e], time = INFINITY, beam_icon_state = "chain", btype = /obj/effect/ebeam/tether)
+		current_beams[length(current_beams) - 1] = new /datum/beam(anchorpoints[e-1], anchorpoints[e], time = INFINITY, beam_icon_state = "chain", maxdistance=100)
+		INVOKE_ASYNC(current_beams[length(current_beams) - 1], /datum/beam.proc/Start)
 
-/obj/item/tether/Crossed(mob/user)
+/*/obj/item/tether/Crossed(mob/user)
 	if (listeningTo == user)
 		if (!BeenHereBefore)
 			BeenHereBefore = TRUE
 		else
 			deleteTethers()
-			to_chat(user, "<span class='notice'>You reel in the tether and unattach it.</span>")
+			to_chat(user, "<span class='notice'>You reel in the tether and unattach it.</span>")*/
 
 /obj/item/tether/afterattack(atom/target, mob/user, proximity)
 	. = ..()
@@ -96,8 +101,7 @@
 			to_chat(user, "<span class='warning'>The tether is already connected to something! Reel it back in first!</span>")
 			return
 		to_chat(user, "<span class='notice'>You attach the tether to the [target].</span>")
-		anchorpoints += target
-		newTether()
+		newTether(target)
 
 /obj/effect/ebeam/tether
 	name = "tether"
