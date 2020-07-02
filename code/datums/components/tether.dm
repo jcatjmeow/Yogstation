@@ -74,7 +74,7 @@
 	return ..()
 
 /obj/item/tether/proc/newTether()
-	var/e = anchorpoints.len
+	var/e = length(anchorpoints)
 	world.log << e
 	current_beams[e] = new(anchorpoints[e], listeningTo, time = INFINITY, beam_icon_state = "chain", btype = /obj/effect/ebeam/tether)
 	if(e > 1)
@@ -92,7 +92,7 @@
 	. = ..()
 	listeningTo = user
 	if(isturf(target) && proximity)
-		if(anchorpoints.len)
+		if(length(anchorpoints))
 			to_chat(user, "<span class='warning'>The tether is already connected to something! Reel it back in first!</span>")
 			return
 		to_chat(user, "<span class='notice'>You attach the tether to the [target].</span>")
