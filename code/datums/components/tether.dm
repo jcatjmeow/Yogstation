@@ -54,6 +54,8 @@
 	var/list/anchorpoints = list()//This is a list of the locations of each anchor point. This does NOT include the last point, aka the user.
 	var/list/datum/beam/current_beams = list() //one beam per anchor point
 	var/BeenHereBefore = FALSE //This handles the behavior of when you walk back to the original turf. It's supposed to unhook the tether automatically. But you have to walk away first!
+	var/last_check = 0
+	var/check_delay = 10
 
 /obj/item/tether/Initialize()
 	. = ..()
@@ -79,11 +81,9 @@
 	anchorpoints += target
 	var/e = length(anchorpoints)
 	world.log << e
-	current_beams += new /datum/beam(anchorpoints[e], src, time = INFINITY, beam_icon_state = "chain", maxdistance=100)
-	INVOKE_ASYNC(current_beams[length(current_beams)], /datum/beam.proc/Start)
+	current_beams += new /datum/beam(anchorpoints[e], src, time = INFINITY, beam_icon_state = "chain", maxdistance=100, btype=/obj/effect/ebeam/tether)
 	if(e > 1)
-		current_beams[length(current_beams) - 1] = new /datum/beam(anchorpoints[e-1], anchorpoints[e], time = INFINITY, beam_icon_state = "chain", maxdistance=100)
-		INVOKE_ASYNC(current_beams[length(current_beams) - 1], /datum/beam.proc/Start)
+		current_beams[length(current_beams) - 1] = new /datum/beam(anchorpoints[e-1], anchorpoints[e], time = INFINITY, beam_icon_state = "chain", maxdistance=100, btype=/obj/effect/ebeam/tether)
 
 /*/obj/item/tether/Crossed(mob/user)
 	if (listeningTo == user)
@@ -102,6 +102,16 @@
 			return
 		to_chat(user, "<span class='notice'>You attach the tether to the [target].</span>")
 		newTether(target)
+
+/obj/item/tether/process()
+	if(world.time <= last_check + check_delay)
+		return
+	last_check = world.time
+
+	for (var/datum/beam/B in current_beams)
+		INVOKE_ASYNC(B, /datum/beam.proc/Start)
+//tether stuff
+
 
 /obj/effect/ebeam/tether
 	name = "tether"
