@@ -74,9 +74,11 @@
 	return ..()
 
 /obj/item/tether/proc/newTether()
-	anchorpoints += loc
 	var/e = anchorpoints.len
-	current_beams[e] = new(anchorpoints[e], listeningTo.loc, time = INFINITY, beam_icon_state = "chain", btype = /obj/effect/ebeam/tether)
+	world.log << e
+	current_beams[e] = new(anchorpoints[e], listeningTo, time = INFINITY, beam_icon_state = "chain", btype = /obj/effect/ebeam/tether)
+	if(e > 1)
+		current_beams[e-1] = new(anchorpoints[e-1], anchorpoints[e], time = INFINITY, beam_icon_state = "chain", btype = /obj/effect/ebeam/tether)
 
 /obj/item/tether/Crossed(mob/user)
 	if (listeningTo == user)
@@ -88,11 +90,13 @@
 
 /obj/item/tether/afterattack(atom/target, mob/user, proximity)
 	. = ..()
+	listeningTo = user
 	if(isturf(target) && proximity)
 		if(anchorpoints.len)
 			to_chat(user, "<span class='warning'>The tether is already connected to something! Reel it back in first!</span>")
 			return
 		to_chat(user, "<span class='notice'>You attach the tether to the [target].</span>")
+		anchorpoints += target
 		newTether()
 
 /obj/effect/ebeam/tether
