@@ -5,8 +5,8 @@
 	pass_flags = PASSTABLE | PASSGRILLE
 	ventcrawler = VENTCRAWLER_ALWAYS
 	gender = NEUTER
-	var/is_adult = 0
-	var/docile = 0
+	var/is_adult = FALSE
+	var/docile = FALSE
 	faction = list("slime","neutral")
 
 	harm_intent_damage = 5
@@ -24,7 +24,7 @@
 
 	maxHealth = 150
 	health = 150
-	healable = 0
+	healable = FALSE
 	gender = NEUTER
 
 	see_in_dark = 8
@@ -51,8 +51,8 @@
 	var/mob/living/Target = null // AI variable - tells the slime to hunt this down
 	var/mob/living/Leader = null // AI variable - tells the slime to follow this person
 
-	var/attacked = 0 // Determines if it's been attacked recently. Can be any number, is a cooloff-ish variable
-	var/rabid = 0 // If set to 1, the slime will attack and eat anything it comes in contact with
+	var/attacked = FALSE // Determines if it's been attacked recently. Can be any number, is a cooloff-ish variable
+	var/rabid = FALSE // If set to 1, the slime will attack and eat anything it comes in contact with
 	var/holding_still = 0 // AI variable, cooloff-ish for how long it's going to stay in one place
 	var/target_patience = 0 // AI variable, cooloff-ish for how long it's going to follow its target
 

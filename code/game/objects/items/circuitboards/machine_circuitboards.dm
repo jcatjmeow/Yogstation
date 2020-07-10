@@ -629,6 +629,13 @@
 		/obj/item/stack/sheet/glass = 1,
 		/obj/item/vending_refill/donksoft = 1)
 
+/obj/item/circuitboard/machine/slime_mart
+	name = "SlimeMart (Machine Board)"
+	build_path = /obj/machinery/slime_mart
+	req_components = list(
+		/obj/item/stack/sheet/glass = 1,
+		/obj/item/stock_parts/matter_bin = 3)
+
 //Medical
 
 /obj/item/circuitboard/machine/chem_dispenser
