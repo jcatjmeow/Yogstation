@@ -201,17 +201,51 @@
 /obj/item/coin/slime_coin
 	name = "slimecoin"
 	value = 0
-	cmineral = "mythril"
-	icon_state = "coin_mythril_heads"
+	cmineral = "slime"
+	icon_state = "coin_slime_heads"
 	var/slimeValue = 0
+	var/slimeOverlay = icon('icons/obj/economy.dmi', "coin_slime_overlay")
+	var/slimeFlipOverlay = icon('icons/obj/economy.dmi', "coin_slime_flip_overlay")
+	var/slimeColor
+
+/obj/item/coin/slime_coin/Initialize()
+	. = ..()
+	if (slimeColor)
+		slimeOverlay += slimeColor
+		slimeFlipOverlay += slimeColor
+		add_overlay(slimeOverlay)
 
 /obj/item/coin/slime_coin/examine(mob/user)
 	. = ..()
 	if(slimeValue)
 		. += "<span class='info'>It's worth [slimeValue] SlimeCoin\s.</span>"
 
+/obj/item/coin/attack_self(mob/user)
+	if(cooldown < world.time)
+		if(string_attached) //does the coin have a wire attached
+			to_chat(user, "<span class='warning'>The coin won't flip very well with something attached!</span>" )
+			return FALSE//do not flip the coin
+		coinflip = pick(sideslist)
+		cooldown = world.time + 15
+		cut_overlays()
+		var/icon/I = icon('icons/obj/economy.dmi', "coin_slime_flip") + slimeFlipOverlay
+		flick(I, src)
+		icon_state = "coin_slime_[coinflip]"
+		if(coinflip == "heads")
+			add_overlay(slimeOverlay)
+		playsound(user.loc, 'sound/items/coinflip.ogg', 50, 1)
+		var/oldloc = loc
+		sleep(15)
+		if(loc == oldloc && user && !user.incapacitated())
+			user.visible_message("[user] has flipped [src]. It lands on [coinflip].", \
+ 							 "<span class='notice'>You flip [src]. It lands on [coinflip].</span>", \
+							 "<span class='italics'>You hear the clattering of loose change.</span>")
+	return TRUE//did the coin flip? useful for suicide_act
+
+
 /obj/item/coin/slime_coin/one
 	slimeValue = 1
+	slimeColor = "#ff0080"
 
 /obj/item/coin/slime_coin/five
 	slimeValue = 5
