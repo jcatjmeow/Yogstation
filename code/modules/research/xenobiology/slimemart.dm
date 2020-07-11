@@ -7,8 +7,6 @@
 #define VENDING_MEDS "Medicial Items"
 #define VENDING_MISC "Miscellaneous" // other
 
-/**********************Mining Equipment Vendor**************************/
-
 /obj/machinery/slime_mart
 	name = "mining equipment vendor"
 	desc = "An equipment vendor for miners, points collected at an ore redemption machine can be spent here."
@@ -22,52 +20,6 @@
 	var/list/prize_list = list( //if you add something to this, please, for the love of god, sort it by price/type. use tabs and not spaces.
 		new /datum/data/mining_equipment("Kinetic Accelerator",			/obj/item/gun/energy/kinetic_accelerator,							750, VENDING_WEAPON),
 		new /datum/data/mining_equipment("Kinetic Crusher",				/obj/item/twohanded/required/kinetic_crusher,						750, VENDING_WEAPON),
-		new /datum/data/mining_equipment("Resonator",					/obj/item/resonator,												800, VENDING_WEAPON),
-		new /datum/data/mining_equipment("Super Resonator",				/obj/item/resonator/upgraded,										2500, VENDING_WEAPON),
-		new /datum/data/mining_equipment("Silver Pickaxe",				/obj/item/pickaxe/silver,											1000, VENDING_WEAPON),
-		new /datum/data/mining_equipment("Diamond Pickaxe",				/obj/item/pickaxe/diamond,											2000, VENDING_WEAPON),
-		new /datum/data/mining_equipment("KA Minebot Passthrough",		/obj/item/borg/upgrade/modkit/minebot_passthrough,					100, VENDING_UPGRADE),
-		new /datum/data/mining_equipment("KA White Tracer Rounds",		/obj/item/borg/upgrade/modkit/tracer,								100, VENDING_UPGRADE),
-		new /datum/data/mining_equipment("KA Adjustable Tracer Rounds",	/obj/item/borg/upgrade/modkit/tracer/adjustable,					150, VENDING_UPGRADE),
-		new /datum/data/mining_equipment("KA Super Chassis",			/obj/item/borg/upgrade/modkit/chassis_mod,							250, VENDING_UPGRADE),
-		new /datum/data/mining_equipment("KA Hyper Chassis",			/obj/item/borg/upgrade/modkit/chassis_mod/orange,					300, VENDING_UPGRADE),
-		new /datum/data/mining_equipment("KA Range Increase",			/obj/item/borg/upgrade/modkit/range,								1000, VENDING_UPGRADE),
-		new /datum/data/mining_equipment("KA Damage Increase",			/obj/item/borg/upgrade/modkit/damage,								1000, VENDING_UPGRADE),
-		new /datum/data/mining_equipment("KA Cooldown Decrease",		/obj/item/borg/upgrade/modkit/cooldown,								1000, VENDING_UPGRADE),
-		new /datum/data/mining_equipment("KA AoE Damage",				/obj/item/borg/upgrade/modkit/aoe/mobs,								2000, VENDING_UPGRADE),
-		new /datum/data/mining_equipment("Shelter Capsule",				/obj/item/survivalcapsule,											400, VENDING_TOOL),
-		new /datum/data/mining_equipment("Luxury Shelter Capsule",		/obj/item/survivalcapsule/luxury,									3000, VENDING_TOOL),
-		new /datum/data/mining_equipment("Advanced Scanner",			/obj/item/t_scanner/adv_mining_scanner,								800, VENDING_TOOL),
-		new /datum/data/mining_equipment("Fulton Pack",					/obj/item/extraction_pack,											1000, VENDING_TOOL),
-		new /datum/data/mining_equipment("Fulton Beacon",				/obj/item/fulton_core,												400, VENDING_TOOL),
-		new /datum/data/mining_equipment("Jaunter",						/obj/item/wormhole_jaunter,											750, VENDING_TOOL),
-		new /datum/data/mining_equipment("Stabilizing Serum",			/obj/item/hivelordstabilizer,										400, VENDING_TOOL),
-		new /datum/data/mining_equipment("Lazarus Injector",			/obj/item/lazarus_injector,											1000, VENDING_TOOL),
-		new /datum/data/mining_equipment("1 Marker Beacon",				/obj/item/stack/marker_beacon,										10, VENDING_TOOL),
-		new /datum/data/mining_equipment("10 Marker Beacons",			/obj/item/stack/marker_beacon/ten,									100, VENDING_TOOL),
-		new /datum/data/mining_equipment("30 Marker Beacons",			/obj/item/stack/marker_beacon/thirty,								300, VENDING_TOOL),
-		new /datum/data/mining_equipment("Nanotrasen Minebot",			/mob/living/simple_animal/hostile/mining_drone,						800, VENDING_MINEBOT),
-		new /datum/data/mining_equipment("Minebot Melee Upgrade",		/obj/item/mine_bot_upgrade,											400, VENDING_MINEBOT),
-		new /datum/data/mining_equipment("Minebot Armor Upgrade",		/obj/item/mine_bot_upgrade/health,									400, VENDING_MINEBOT),
-		new /datum/data/mining_equipment("Minebot Cooldown Upgrade",	/obj/item/borg/upgrade/modkit/cooldown/minebot,						600, VENDING_MINEBOT),
-		new /datum/data/mining_equipment("Minebot AI Upgrade",			/obj/item/slimepotion/slime/sentience/mining,						1000, VENDING_MINEBOT),
-		new /datum/data/mining_equipment("Explorer's Webbing",			/obj/item/storage/belt/mining,										500, VENDING_EQUIPMENT),
-		new /datum/data/mining_equipment("Mining Conscription Kit",		/obj/item/storage/backpack/duffelbag/mining_conscript,				1000, VENDING_EQUIPMENT),
-		new /datum/data/mining_equipment("GAR Meson Scanners",			/obj/item/clothing/glasses/meson/gar,								500, VENDING_EQUIPMENT),
-		new /datum/data/mining_equipment("Jump Boots",					/obj/item/clothing/shoes/bhop,										2500, VENDING_EQUIPMENT),
-		new /datum/data/mining_equipment("Mining Hardsuit",				/obj/item/clothing/suit/space/hardsuit/mining,						2000, VENDING_EQUIPMENT),
-		new /datum/data/mining_equipment("Jetpack Upgrade",				/obj/item/tank/jetpack/suit,										2000, VENDING_EQUIPMENT),
-		new /datum/data/mining_equipment("Survival Medipen",			/obj/item/reagent_containers/hypospray/medipen/survival,			500, VENDING_MEDS),
-		new /datum/data/mining_equipment("Brute First-Aid Kit",			/obj/item/storage/firstaid/brute,									600, VENDING_MEDS),
-		new /datum/data/mining_equipment("Tracking Implant Kit", 		/obj/item/storage/box/minertracker,									600, VENDING_MEDS),
-		new /datum/data/mining_equipment("Point Transfer Card",			/obj/item/card/mining_point_card,									500, VENDING_MISC),
-		new /datum/data/mining_equipment("Alien Toy",					/obj/item/clothing/mask/facehugger/toy,								300, VENDING_MISC),
-		new /datum/data/mining_equipment("Whiskey",						/obj/item/reagent_containers/food/drinks/bottle/whiskey,			100, VENDING_MISC),
-		new /datum/data/mining_equipment("Absinthe",					/obj/item/reagent_containers/food/drinks/bottle/absinthe/premium,	100, VENDING_MISC),
-		new /datum/data/mining_equipment("Cigar",						/obj/item/clothing/mask/cigarette/cigar/havana,						150, VENDING_MISC),
-		new /datum/data/mining_equipment("Soap",						/obj/item/soap/nanotrasen,											200, VENDING_MISC),
-		new /datum/data/mining_equipment("Laser Pointer",				/obj/item/laser_pointer,											300, VENDING_MISC),
-		new /datum/data/mining_equipment("Space Cash",					/obj/item/stack/spacecash/c1000,									2000, VENDING_MISC)
 		)
 
 /datum/data/slime_mart
@@ -114,7 +66,7 @@
 /obj/machinery/slime_mart/ui_static_data(mob/user)
 	. = list()
 	.["product_records"] = list()
-	for(var/datum/data/mining_equipment/prize in prize_list)
+	for(var/datum/data/slime_mart/prize in prize_list)
 		var/list/product_data = list(
 			path = replacetext(replacetext("[prize.equipment_path]", "/obj/item/", ""), "/", "-"),
 			name = prize.equipment_name,
@@ -168,7 +120,7 @@
 
 /obj/machinery/slime_mart/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/mining_voucher))
-		RedeemVoucher(I, user)
+	//	RedeemVoucher(I, user)
 		return
 	if(default_deconstruction_screwdriver(user, "mining-open", "mining", I))
 		return
@@ -176,14 +128,6 @@
 		return
 	return ..()
 
-/obj/machinery/slime_mart/proc/RedeemVoucher(obj/item/mining_voucher/voucher, mob/redeemer)
-  /*
-   check_menu: Checks if we are allowed to interact with a radial menu
-
-   Arguments:
-   redeemer The mob interacting with a menu
-   voucher The mining voucher item
-   */
 /obj/machinery/slime_mart/proc/check_menu(obj/item/mining_voucher/voucher, mob/living/redeemer)
 	if(!Adjacent(redeemer))
 		return FALSE
@@ -220,28 +164,8 @@
 	if(slimeValue)
 		. += "<span class='info'>It's worth [slimeValue] SlimeCoin\s.</span>"
 
-/obj/item/coin/attack_self(mob/user)
-	if(cooldown < world.time)
-		if(string_attached) //does the coin have a wire attached
-			to_chat(user, "<span class='warning'>The coin won't flip very well with something attached!</span>" )
-			return FALSE//do not flip the coin
-		coinflip = pick(sideslist)
-		cooldown = world.time + 15
-		cut_overlays()
-		var/icon/I = icon('icons/obj/economy.dmi', "coin_slime_flip") + slimeFlipOverlay
-		flick(I, src)
-		icon_state = "coin_slime_[coinflip]"
-		if(coinflip == "heads")
-			add_overlay(slimeOverlay)
-		playsound(user.loc, 'sound/items/coinflip.ogg', 50, 1)
-		var/oldloc = loc
-		sleep(15)
-		if(loc == oldloc && user && !user.incapacitated())
-			user.visible_message("[user] has flipped [src]. It lands on [coinflip].", \
- 							 "<span class='notice'>You flip [src]. It lands on [coinflip].</span>", \
-							 "<span class='italics'>You hear the clattering of loose change.</span>")
-	return TRUE//did the coin flip? useful for suicide_act
-
+/obj/item/coin/slime_coin/attack_self(mob/user)
+	return
 
 /obj/item/coin/slime_coin/one
 	slimeValue = 1
