@@ -74760,10 +74760,6 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/plasteel/white,
 /area/science/mixing)
-"cBJ" = (
-/obj/effect/turf_decal/stripes/line,
-/turf/open/floor/plasteel,
-/area/science/mixing)
 "cBK" = (
 /obj/machinery/light/small,
 /obj/machinery/airalarm{
@@ -83232,6 +83228,11 @@
 	},
 /turf/open/floor/plasteel,
 /area/engine/atmos)
+"kAV" = (
+/obj/effect/turf_decal/stripes/line,
+/obj/machinery/sci_bombardment,
+/turf/open/floor/plasteel,
+/area/science/mixing)
 "kDM" = (
 /obj/structure/cable/yellow{
 	icon_state = "4-8"
@@ -121114,7 +121115,7 @@ cyX
 vNW
 czF
 cAN
-cBJ
+kAV
 cAP
 cDs
 czD
