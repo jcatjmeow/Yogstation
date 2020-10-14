@@ -106,6 +106,15 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	var/list/grind_results //A reagent list containing the reagents this item produces when ground up in a grinder - this can be an empty list to allow for reagent transferring only
 	var/list/juice_results //A reagent list containing blah blah... but when JUICED in a grinder!
 
+	///If putting on the item takes time, this is how long it takes in deciseconds.
+	var/equip_delay = 0
+	///If taking off the item takes time, this is how long it takes in deciseconds.
+	var/unequip_delay = 0
+	///The message for the do_after proc, e.g. "you begin to put on the [src]"
+	var/delayed_equip_message
+	///The message for the do_after proc, e.g. "you begin to take off the [src]"
+	var/delayed_unequip_message
+
 /obj/item/Initialize()
 
 	materials =	typelist("materials", materials)

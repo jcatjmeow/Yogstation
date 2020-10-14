@@ -315,6 +315,13 @@
 
 	if(HAS_TRAIT(I, TRAIT_NODROP) && !force)
 		return FALSE
+	if(I.strip_delay)
+		var/msg = "You begin to take off [I]..."
+		if(I.delayed_unequip_message)
+			msg = I.delayed_unequip_message
+		src.visible_message("<span class='notice'>[src] begins to take off [I]...</span>", "<span class='notice'>[msg]</span>")
+		if(!do_after(src, I.unequip_delay, target = src))
+			return FALSE
 
 	var/hand_index = get_held_index_of_item(I)
 	if(hand_index)

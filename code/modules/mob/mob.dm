@@ -11,11 +11,11 @@
   * Unsets the focus var
   *
   * Clears alerts for this mob
-  * 
+  *
   * Resets all the observers perspectives to the tile this mob is on
-  * 
+  *
   * qdels any client colours in place on this mob
-  * 
+  *
   * Ghostizes the client attached to this mob
   *
   * Parent call
@@ -48,7 +48,7 @@
   *
   * Sends global signal COMSIG_GLOB_MOB_CREATED
   *
-  * Adds to global lists 
+  * Adds to global lists
   * * GLOB.mob_list
   * * GLOB.mob_directory (by tag)
   * * GLOB.dead_mob_list - if mob is dead
@@ -133,7 +133,7 @@
 /mob/proc/get_photo_description(obj/item/camera/camera)
 	return "a ... thing?"
 
-/** 
+/**
   * Show a message to this mob (visual)
   */
 /mob/proc/show_message(msg, type, alt_msg, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
@@ -168,7 +168,7 @@
 
 /**
   * Generate a visible message from this atom
-  * 
+  *
   * Show a message to all player mobs who sees this atom
   *
   * Show a message to the src mob (if the src is a mob)
@@ -309,6 +309,9 @@
 			if(!disable_warning)
 				to_chat(src, "<span class='warning'>You are unable to equip that!</span>")
 		return FALSE
+	if(W.equip_delay)
+		return equip_to_slot_delayed(W, slot, redraw_mob)
+	//Implicit else (if the above is true then this code below is never run)
 	equip_to_slot(W, slot, redraw_mob) //This proc should not ever fail.
 	return TRUE
 
@@ -324,7 +327,26 @@
 	return
 
 /**
-  * Equip an item to the slot or delete 
+  * Actually equips an item to a slot after a period of time. This time is set by the item's vars. (UNSAFE)
+  *
+  * This is an UNSAFE proc. It merely handles the actual job of equipping. All the checks on
+  * whether you can or can't equip need to be done before! Use mob_can_equip() for that task.
+  *
+  *In most cases you will want to use equip_to_slot_if_possible().
+  *This proc in paticular handles delayed equipping.
+  */
+/mob/proc/equip_to_slot_delayed(obj/item/W, slot, redraw_mob)
+	var/msg = "You begin to put on [W]..."
+	if(W.delayed_equip_message)
+		msg = W.delayed_equip_message
+	src.visible_message("<span class='notice'>[src] begins to put on [W]...</span>", "<span class='notice'>[msg]</span>")
+	if(do_after(src, W.equip_delay, target = src))
+		equip_to_slot(W, slot, redraw_mob)
+		return TRUE
+	return FALSE
+
+/**
+  * Equip an item to the slot or delete
   *
   * This is just a commonly used configuration for the equip_to_slot_if_possible() proc, used to
   * equip people when the round starts and when events happen and such.
@@ -695,8 +717,8 @@
 	if(ismob(dropping) && dropping != user)
 		var/mob/M = dropping
 		M.show_inv(user)
-		
-/** 
+
+/**
   * Handle the result of a click drag onto this mob
   *
   * For mobs this just shows the inventory
@@ -711,7 +733,7 @@
 
 /**
   * Output an update to the stat panel for the client
-  * 
+  *
   * calculates client ping, round id, server time, time dilation and other data about the round
   * and puts it in the mob status panel on a regular loop
   */
@@ -1064,7 +1086,7 @@
   * Fully update the name of a mob
   *
   * This will update a mob's name, real_name, mind.name, GLOB.data_core records, pda, id and traitor text
-  * 
+  *
   * Calling this proc without an oldname will only update the mob and skip updating the pda, id and records ~Carn
   */
 /mob/proc/fully_replace_character_name(oldname,newname)
